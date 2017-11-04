@@ -1,20 +1,18 @@
 var express = require('express');
-var mongoose = require('./../mongoose');
 var router = express.Router();
-var gameDataSchema = require('./../model/cubecodeGameData');
+var modelDao = require('./../model/modelDao');
 
 /* GET cube-code listing. */
-router.get('/list', function(req, res, next) {
-
-    gameDataSchema.find(function(err, books) {
+router.get('/game/list', function(req, res, next) {
+    modelDao.gameDataSchema.find(function(err, books) {
     if(err) return res.status(500).send({error: 'database failure'});
     res.json(books);
   });
 });
 
 /* REGISTER new cube-code game */
-router.post('/post', function(req, res) {
-  var gameDataModel = new gameDataSchema();
+router.post('/game/add', function(req, res) {
+  var gameDataModel = new modelDao.gameDataSchema();
   gameDataModel.data = req.body.data;
   gameDataModel.collectAnswer = req.body.collectAnswer;
   gameDataModel.save(function(err) {
