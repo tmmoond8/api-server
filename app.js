@@ -11,14 +11,6 @@ var cubeCode = require('./routes/cubecode');
 
 var app = express();
 
-
-// var io = require('socket.io');
-//
-// io.on('connection', function(socket) {
-//     console.log(' aaaaaaaaaaaaaaaa');
-// });
-
-
 app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
