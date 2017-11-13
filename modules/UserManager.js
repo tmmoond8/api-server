@@ -8,7 +8,7 @@ let userList = {};
 class User {
     constructor(id) {
         this.id = id;
-        const newUser = Emoji.get();
+        const newUser = Emoji.pop(id);
         this.name = newUser.name;
         this.emoji = newUser.emoji;
     }
@@ -21,6 +21,12 @@ class UserManager {
     addUser(id) {
         userList[id] = this.createUser(id);
         return userList[id];
+    }
+    removeUser(id) {
+        const user = JSON.parse(JSON.stringify(userList[id]));
+        Emoji.push(id);
+        delete userList[id];
+        return user;
     }
 }
 

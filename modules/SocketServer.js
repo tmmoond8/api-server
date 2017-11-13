@@ -8,14 +8,22 @@ module.exports = function(io) {
         socket.on('join', (response) => {
             socket.join(response.chattingRoom);
             socket.join(response.userId);
-            console.log('join - ', response.chattingRoom, response.userId);
+            console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
             io.sockets.emit('join', userManager.addUser(response.userId));
+            socket['cubecode'] = {id: response.userId};
         });
 
         socket.on('message', (msg) => {
             io.sockets.emit('message', msg);
-        console.dir(msg);
+            console.dir(msg);
         });
-    });
-}
-
+        socket.on('test', (msg) => {
+            console.log(msg);
+        });
+        socket.on('disconnect', () => {
+            if (socket.cubecode) {
+                console.log('---- [OUT] ----', userManager.removeUser(socket.cubecode.id));
+            }
+        });
+    })
+};
