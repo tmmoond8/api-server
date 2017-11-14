@@ -2,7 +2,10 @@
  * Created by moonti on 2017. 11. 12..
  */
 var UserManager = require('./UserManager');
+var CubeCodeGameManager = require('./CubeCodeGameManager');
 let userManager = new UserManager();
+let cubeCodeGameManager = new CubeCodeGameManager();
+
 module.exports = function(io) {
     io.on('connection', (socket) => {
         socket.on('join', (response) => {
@@ -11,6 +14,7 @@ module.exports = function(io) {
             console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
             io.sockets.emit('join', userManager.addUser(response.userId));
             socket['cubecode'] = {id: response.userId};
+            io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame());
         });
 
         socket.on('message', (msg) => {

@@ -2,7 +2,8 @@
  * Created by tmmoon on 17. 11. 3.
  */
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test_mongo');
+const Config = require('./../config');
+mongoose.connect(Config.mongoDB.baseURL);
 
 var db = mongoose.connection;
 
