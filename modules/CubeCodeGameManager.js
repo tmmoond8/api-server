@@ -15,6 +15,7 @@ class CubeCodeGameManager {
         if (currentGame) return currentGame;
         const index = Math.floor(Math.random() * gameLib.length ) + 0;
         currentGame = gameLib[index];
+        console.log('collectAnswer : ' + currentGame.collectAnswer);
         return currentGame;
     }
     clearGame () {
