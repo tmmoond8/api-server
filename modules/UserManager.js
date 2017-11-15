@@ -28,6 +28,9 @@ class UserManager {
         delete userList[id];
         return user;
     }
+    getUserList() {
+        return userList;
+    }
 }
 
 module.exports = UserManager;
