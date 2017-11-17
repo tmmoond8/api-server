@@ -14,12 +14,20 @@ class CubeCodeGameManager {
     getGame() {
         if (currentGame) return currentGame;
         const index = Math.floor(Math.random() * gameLib.length ) + 0;
-        currentGame = gameLib[index];
-        console.log('collectAnswer : ' + currentGame.collectAnswer);
+        currentGame = gameLib[0].data;
+        // console.log('collectAnswer : ' + currentGame.collectAnswer);
+        let newGame = {
+            boards: [currentGame, currentGame, currentGame, currentGame],
+            collectAnswer: '밥'    
+        };
+        currentGame = newGame;
         return currentGame;
     }
     clearGame () {
         currentGame = null;
+    }
+    static createFourBoard(board) {
+        
     }
 }
 

@@ -33,7 +33,8 @@ module.exports = function(io) {
         console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
         io.sockets.emit('join', userManager.addUser(response.userId));
         socket['cubecode'] = {id: response.userId};
-        io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().data);
+        // console.log(cubeCodeGameManager.getGame());
+        io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
         io.sockets.emit('userList', userManager.getUserList());
     };
     const message = (socket, msg) => {
@@ -41,7 +42,8 @@ module.exports = function(io) {
         if (cubeCodeGameManager.getGame().collectAnswer === msg.message) {
             cubeCodeGameManager.clearGame();
             userManager.scoreUp(socket.cubecode.id);
-            io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().data);
+            console.log(cubeCodeGameManager.getGame());
+            io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
             io.sockets.emit('test', 'collectAnswer');
             io.sockets.emit('userList', userManager.getUserList());
         }
