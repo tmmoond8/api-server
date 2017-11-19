@@ -33,7 +33,6 @@ module.exports = function(io) {
         console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
         io.sockets.emit('join', userManager.addUser(response.userId));
         socket['cubecode'] = {id: response.userId};
-        // console.log(cubeCodeGameManager.getGame());
         io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
         io.sockets.emit('userList', userManager.getUserList());
     };
