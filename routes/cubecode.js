@@ -4,9 +4,9 @@ var modelDao = require('./../model/modelDao');
 
 /* GET cube-code listing. */
 router.get('/game/list', function(req, res, next) {
-    modelDao.gameDataSchema.find(function(err, gameData) {
+    modelDao.gameDataSchema.find(function(err, gameList) {
     if(err) return res.status(500).send({error: 'database failure'});
-    res.json(gameData);
+    res.json(gameList);
   });
 });
 
