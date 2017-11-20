@@ -6,26 +6,15 @@ var CubeCodeGameManager = require('./CubeCodeGameManager');
 
 let userManager = new UserManager();
 let cubeCodeGameManager = new CubeCodeGameManager();
+
 module.exports = function(io) {
     io.on('connection', (socket) => {
         socket.on('join', (response) => {
-            socket.join(response.chattingRoom);
-            socket.join(response.userId);
-            console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
-            io.sockets.emit('join', userManager.addUser(response.userId));
-            socket['cubecode'] = {id: response.userId};
-            io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().data);
-            io.sockets.emit('userList', userManager.getUserList());
+            join(socket, response);
         });
 
         socket.on('message', (msg) => {
-            io.sockets.emit('message', msg);
-            if (cubeCodeGameManager.getGame().collectAnswer === msg.message) {
-                cubeCodeGameManager.clearGame();
-                io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().data);
-                io.sockets.emit('test', 'collectAnswer');
-            }
-            console.dir(msg);
+            message(socket, msg);
         });
         socket.on('test', (msg) => {
             console.log(msg);
@@ -36,5 +25,27 @@ module.exports = function(io) {
                 io.sockets.emit('userList', userManager.getUserList());
             }
         });
-    })
+    });
+
+    const join = (socket, response) => {
+        socket.join(response.chattingRoom);
+        socket.join(response.userId);
+        console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
+        io.sockets.emit('join', userManager.addUser(response.userId));
+        socket['cubecode'] = {id: response.userId};
+        io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
+        io.sockets.emit('userList', userManager.getUserList());
+    };
+    const message = (socket, msg) => {
+        io.sockets.emit('message', msg);
+        if (cubeCodeGameManager.getGame().collectAnswer === msg.message) {
+            cubeCodeGameManager.clearGame();
+            userManager.scoreUp(socket.cubecode.id);
+            console.log(cubeCodeGameManager.getGame());
+            io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
+            io.sockets.emit('test', 'collectAnswer');
+            io.sockets.emit('userList', userManager.getUserList());
+        }
+        console.dir(msg);
+    };
 };

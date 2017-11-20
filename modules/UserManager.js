@@ -11,6 +11,7 @@ class User {
         const newUser = Emoji.pop(id);
         this.name = newUser.name;
         this.emoji = newUser.emoji;
+        this.score = 0;
     }
 }
 
@@ -30,6 +31,9 @@ class UserManager {
     }
     getUserList() {
         return userList;
+    }
+    scoreUp(id) {
+        if (userList[id]) userList[id].score = userList[id].score + 1
     }
 }
 
