@@ -7,6 +7,11 @@ var CubeCodeGameManager = require('./CubeCodeGameManager');
 let userManager = new UserManager();
 let cubeCodeGameManager = new CubeCodeGameManager();
 
+const MESSAGE_TYPE = {
+    BROADCAST : 0,
+    NOTIFY : 32,
+};
+
 module.exports = function(io) {
     io.on('connection', (socket) => {
         socket.on('join', (response) => {
@@ -31,10 +36,12 @@ module.exports = function(io) {
         socket.join(response.chattingRoom);
         socket.join(response.userId);
         console.log('---- [JOIN] ----- ', response.chattingRoom, response.userId);
-        io.sockets.emit('join', userManager.addUser(response.userId));
+        const newUser = userManager.addUser(response.userId);
+        io.sockets.emit('join', newUser);
         socket['cubecode'] = {id: response.userId};
         io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
         io.sockets.emit('userList', userManager.getUserList());
+        notify(socket, newUser.name + '님이 입장 하였습니다', MESSAGE_TYPE.NOTIFY);
     };
     const message = (socket, msg) => {
         io.sockets.emit('message', msg);
@@ -48,4 +55,12 @@ module.exports = function(io) {
         }
         console.dir(msg);
     };
+
+    const notify = (socket, msg, type) => {
+        const message = {
+            message: msg,
+            type: type
+        }
+        io.sockets.emit('notify', message);
+    }
 };
