@@ -12,6 +12,29 @@ const MESSAGE_TYPE = {
     NOTIFY : 32,
 };
 
+const SEVER_INFO = {
+    id: 10001,
+    name: 'server',
+}
+
+class Message {
+    constructor(user, message, type) {
+        this.user = SEVER_INFO;
+        this.message = message || '';
+        this.type = type | MESSAGE_TYPE.BROADCAST;
+    }
+
+    setMessageId() {
+        this.messageId = Message.createMessageId();
+    };
+
+    static createMessageId() {
+        const toDay = new Date().toISOString().slice(0,19)
+            .replace(/-/g,"").replace(/t/gi, "").replace(/:/g, "");
+        return toDay + Math.floor((1 + Math.random()) * 31);
+    }
+}
+
 module.exports = function(io) {
     io.on('connection', (socket) => {
         socket.on('join', (response) => {
@@ -44,6 +67,7 @@ module.exports = function(io) {
         notify(socket, newUser.name + '님이 입장 하였습니다', MESSAGE_TYPE.NOTIFY);
     };
     const message = (socket, msg) => {
+        msg.messageId = Message.createMessageId();
         io.sockets.emit('message', msg);
         if (cubeCodeGameManager.getGame().collectAnswer === msg.message) {
             cubeCodeGameManager.clearGame();
@@ -57,10 +81,8 @@ module.exports = function(io) {
     };
 
     const notify = (socket, msg, type) => {
-        const message = {
-            message: msg,
-            type: type
-        }
+        const message = new Message(null, msg, type);
+        message.setMessageId();
         io.sockets.emit('notify', message);
     }
 };
