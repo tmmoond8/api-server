@@ -16,7 +16,6 @@ let EmojiInUse = {};
 let EmojiManager = {
     pop: (id) => {
         const keys = Object.keys(Emoji);
-        // console.log('keys',keys.length);
         if (keys.length < 1) return defaultEmoji;
         const index = Math.floor(Math.random() * keys.length ) + 0;
         const emoji = JSON.parse(JSON.stringify(Emoji[keys[index]]));
