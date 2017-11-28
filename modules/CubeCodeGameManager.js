@@ -16,10 +16,10 @@ class CubeCodeGameManager {
     getGame() {
         if (currentGame) return currentGame;;
         const index = Math.floor(Math.random() * gameLib.length ) + 0;
-        currentGame = gameLib[0].data;
+        currentGame = gameLib[index].data;
         const newGame = {
             boards: CubeCodeGameManager.createFourBoard(currentGame),
-            collectAnswer: currentGame.collectAnswer
+            collectAnswer: gameLib[0].collectAnswer
         };
         currentGame = newGame;
         return currentGame;

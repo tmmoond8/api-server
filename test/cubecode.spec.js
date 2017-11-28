@@ -1,5 +1,7 @@
 import request from 'supertest';
 import { expect } from 'chai';
+import CubeCodeGameManager from './../modules/CubeCodeGameManager';
+import assert from 'assert';
 
 import app from './../app';
 
@@ -32,5 +34,47 @@ describe('CubeCode API', () => {
             expect(res.body.result).to.equal(1);
             done();
         })
-    })
+    });
+
+    it('CubeCodeGameManager.createFourBoard', (done) => {
+        const board = '00000000000\n00000100000\n00000100000\n00000100000\n00001010000\n00010001000\n01100000110\n00000100000\n00000100000\n00000100000\n11111111111';
+        const fourBoard = CubeCodeGameManager.createFourBoard(board);
+        let valueCount = 0;
+        let aBoard, aRow;
+
+        var rowTest = (row) => {
+            aRow = row.split('');
+            assert.equal(11, aRow.length);
+            aRow.forEach((value) => {if(value !== '0') valueCount++});
+        }
+
+        for (let i = 0; i < 4; i++) {
+            aBoard = fourBoard[i];
+            assert.equal(11, aBoard.length);
+            aBoard.forEach((row) => {rowTest(row)})
+        }
+        assert.equal(25, valueCount);
+
+        done();
+    });
+
+
+    it('CubeCodeGameManager.getGame', (done) => {
+        const gameData = new CubeCodeGameManager().getGame();
+        let aBoard, aRow;
+
+        var rowTest = (row) => {
+            aRow = row.split('');
+            assert.equal(11, aRow.length);
+        }
+
+        for (let i = 0; i < 4; i++) {
+            aBoard = gameData.boards[i];
+            assert.equal(11, aBoard.length);
+            aBoard.forEach((row) => {rowTest(row)})
+        }
+
+        assert.equal(1, gameData.collectAnswer.length);
+        done();
+    });
 });
