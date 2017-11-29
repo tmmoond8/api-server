@@ -15,6 +15,7 @@ let EmojiInUse = {};
 
 let EmojiManager = {
     pop: (id) => {
+        if (EmojiInUse[id]) return EmojiInUse[id];
         const keys = Object.keys(Emoji);
         if (keys.length < 1) return defaultEmoji;
         const index = Math.floor(Math.random() * keys.length ) + 0;
@@ -24,9 +25,15 @@ let EmojiManager = {
         return emoji;
     },
     push: (id) => {
-        const emoji = EmojiInUse[id];
-        Emoji[emoji.name] = emoji;
+        Emoji[EmojiInUse[id].name] = EmojiInUse[id];
+        delete EmojiInUse[id];
     },
+    getEmojiInUse: () => {
+        return EmojiInUse;
+    },
+    getEmojiLibMax: () => {
+        return Object.keys(EmojiLibrary).length;
+    }
 };
 
 module.exports = EmojiManager;
