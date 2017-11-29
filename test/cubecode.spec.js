@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import CubeCodeGameManager from './../modules/CubeCodeGameManager';
 import assert from 'assert';
 var modelDao = require('./../model/modelDao');
+import Emoji from './../modules/Emoji';
 
 import app from './../app';
 
@@ -78,6 +79,21 @@ describe('CubeCode API', () => {
         }
 
         assert.equal(1, gameData.collectAnswer.length);
+        done();
+    });
+    it ('Emoji.pop', (done) => {
+        let emojiCount = Object.keys(Emoji.getEmojiInUse()).length;
+        let user, i;
+        const emojiMax = Emoji.getEmojiLibMax();
+        for (i = 0; i < emojiMax; i++) {
+            user = Emoji.pop(i+'1123');
+            assert.equal(Emoji.getEmojiInUse()[i+'1123'], user);
+        }
+        assert.equal('smile', Emoji.pop('1123').name);
+        assert.equal(Emoji.getEmojiInUse()[3+'1123'], Emoji.pop(3+'1123'));
+
+        Emoji.push(3+'1123');
+        assert.equal(undefined, Emoji.getEmojiInUse()[3+'1123']);
         done();
     });
 });
