@@ -4,6 +4,7 @@ import CubeCodeGameManager from './../modules/CubeCodeGameManager';
 import assert from 'assert';
 var modelDao = require('./../model/modelDao');
 import Emoji from './../modules/Emoji';
+import UserManager from './../modules/UserManager';
 
 import app from './../app';
 
@@ -94,6 +95,22 @@ describe('CubeCode API', () => {
 
         Emoji.push(3+'1123');
         assert.equal(undefined, Emoji.getEmojiInUse()[3+'1123']);
+        done();
+    });
+    it('UserManager Test', (done) => {
+        const userId = userId;
+        const userManager = new UserManager();
+        let user = userManager.createUser(userId);
+        assert.equal(user.id, userId);
+        assert.equal(userManager.getUserList()[userId], undefined);
+        userManager.addUser(userId);
+        assert.equal(userManager.getUserList()[userId].id, userId);
+        assert.equal(userManager.getUserList()[userId].score, 0);
+        userManager.scoreUp(userId);
+        assert.equal(userManager.getUserList()[userId].score, 1);
+        userManager.removeUser(userId);
+        assert.equal(userManager.getUserList()[userId], undefined);
+
         done();
     });
 });
