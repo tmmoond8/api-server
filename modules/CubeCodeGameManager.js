@@ -19,7 +19,7 @@ class CubeCodeGameManager {
         currentGame = gameLib[index].data;
         const newGame = {
             boards: CubeCodeGameManager.createFourBoard(currentGame),
-            collectAnswer: gameLib[0].collectAnswer
+            collectAnswer: gameLib[index].collectAnswer
         };
         currentGame = newGame;
         return currentGame;
