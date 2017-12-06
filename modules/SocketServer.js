@@ -74,7 +74,7 @@ module.exports = function(io) {
             userManager.scoreUp(socket.cubecode.id);
             console.log(cubeCodeGameManager.getGame());
             io.sockets.emit('cubecode-game-one', cubeCodeGameManager.getGame().boards);
-            io.sockets.emit('test', 'collectAnswer');
+            notify(socket, `${msg.user.emoji + ' ' + msg.user.name} 님께서 정답을 맞추셨습니다. 정답은 '${msg.message}' 입니다.`, MESSAGE_TYPE.NOTIFY);
             io.sockets.emit('userList', userManager.getUserList());
         }
         console.dir(msg);
