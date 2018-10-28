@@ -6,6 +6,6 @@ let mongoDB = {
     host: 'localhost',
 }
 
-mongoDB.baseURL = 'mongodb://' + mongoDB.host + '/test_mongo';
+mongoDB.baseURL = 'mongodb://' + mongoDB.host + '/cube_code';
 Config.mongoDB = mongoDB;
 module.exports = Config;
